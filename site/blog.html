@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blog — nullsemiotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-title" href="index.html">nullsemiotics</a>
+  <nav class="site-nav">
+    <a href="cabinet.html">cabinet</a>
+    <a href="blog.html" class="active">blog</a>
+    <a href="projects.html">projects</a>
+  </nav>
+  <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ menu</button>
+</header>
+
+<div class="site-body">
+  <aside class="sidebar">
+    <div class="widget">
+      <div class="widget-title">∴ navigate</div>
+      <div class="widget-body">
+        <a href="index.html">⌂ home</a>
+        <a href="cabinet.html">▣ cabinet</a>
+        <a href="blog.html">░ blog</a>
+        <a href="projects.html">◈ projects</a>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ now playing</div>
+      <div class="widget-body"><span class="widget-placeholder">[ widget slot ]</span></div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ now reading</div>
+      <div class="widget-body"><span class="widget-placeholder">[ widget slot ]</span></div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ elsewhere</div>
+      <div class="widget-body">
+        <a href="https://linkedin.com">linkedin</a>
+        <a href="https://github.com">github</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <h1 class="page-title">Blog</h1>
+
+    <article class="entry">
+      <div class="entry-meta">2026-05-25 · personal</div>
+      <a class="entry-title" href="#">First post. Why I made this.</a>
+      <div class="entry-excerpt">Everyone says you should have a personal site. I finally listened...</div>
+      <span class="entry-tag">meta</span>
+    </article>
+
+  </main>
+</div>
+
+<footer class="site-footer">NULL · SEMIOTICS · MMXXVI</footer>
+
+</body>
+</html>

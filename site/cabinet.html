@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cabinet — nullsemiotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-title" href="index.html">nullsemiotics</a>
+  <nav class="site-nav">
+    <a href="cabinet.html" class="active">cabinet</a>
+    <a href="blog.html">blog</a>
+    <a href="projects.html">projects</a>
+  </nav>
+  <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ menu</button>
+</header>
+
+<div class="site-body">
+  <aside class="sidebar">
+    <div class="widget">
+      <div class="widget-title">∴ navigate</div>
+      <div class="widget-body">
+        <a href="index.html">⌂ home</a>
+        <a href="cabinet.html">▣ cabinet</a>
+        <a href="blog.html">░ blog</a>
+        <a href="projects.html">◈ projects</a>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ now playing</div>
+      <div class="widget-body"><span class="widget-placeholder">[ widget slot ]</span></div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ now reading</div>
+      <div class="widget-body"><span class="widget-placeholder">[ widget slot ]</span></div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">∴ elsewhere</div>
+      <div class="widget-body">
+        <a href="https://linkedin.com">linkedin</a>
+        <a href="https://github.com">github</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <h1 class="page-title">Cabinet of Cultural Artifacts</h1>
+
+    <article class="entry">
+      <div class="entry-meta">2026-05-25 · music</div>
+      <a class="entry-title" href="#">The strange optimism of Polish post-punk</a>
+      <div class="entry-excerpt">Somewhere between martial law and the fall of communism, a generation decided to make noise about it...</div>
+      <span class="entry-tag">music</span>
+      <span class="entry-tag">poland</span>
+      <span class="entry-tag">1980s</span>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">2026-05-18 · objects</div>
+      <a class="entry-title" href="#">On one specific brand of shoes and what it means to belong</a>
+      <div class="entry-excerpt">There is a kind of object that becomes a symbol before it becomes a commodity...</div>
+      <span class="entry-tag">fashion</span>
+      <span class="entry-tag">semiotics</span>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">2026-05-10 · music</div>
+      <a class="entry-title" href="#">Dungeon synth and the memory of places that never existed</a>
+      <div class="entry-excerpt">The cassette hiss is intentional. The lo-fi is a philosophy, not a limitation...</div>
+      <span class="entry-tag">music</span>
+      <span class="entry-tag">ambient</span>
+    </article>
+
+  </main>
+</div>
+
+<footer class="site-footer">NULL · SEMIOTICS · MMXXVI</footer>
+
+</body>
+</html>

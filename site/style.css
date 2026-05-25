@@ -1,0 +1,210 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Share+Tech+Mono&display=swap');
+
+body {
+  background: #0d0f14;
+  font-family: 'Share Tech Mono', monospace;
+  color: #b0b3c8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.site-header {
+  border-bottom: 0.5px solid #2a2f45;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  background: #0d0f14;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 26px;
+  color: #d4d6e8;
+  letter-spacing: 1px;
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  font-size: 11px;
+  color: #4a5070;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+.site-nav a:hover,
+.site-nav a.active { color: #c8c9d4; }
+
+.hamburger {
+  display: none;
+  background: none;
+  border: 0.5px solid #2a2f45;
+  color: #4a5070;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.site-body {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  flex: 1;
+}
+
+.sidebar {
+  border-right: 0.5px solid #2a2f45;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.widget {
+  border: 0.5px solid #2a2f45;
+  padding: 0.75rem;
+  background: #10131c;
+}
+
+.widget-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #3d4a6e;
+  margin-bottom: 0.6rem;
+  border-bottom: 0.5px solid #1e2235;
+  padding-bottom: 0.4rem;
+}
+
+.widget-body {
+  font-size: 11px;
+  color: #4a5070;
+  line-height: 1.6;
+}
+
+.widget-body a {
+  display: block;
+  padding: 2px 0;
+  color: #6a7aaa;
+  transition: color 0.15s;
+}
+
+.widget-body a:hover { color: #c8c9d4; }
+
+.widget-placeholder {
+  font-size: 10px;
+  color: #252838;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+.main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 28px;
+  color: #d4d6e8;
+  border-bottom: 0.5px solid #2a2f45;
+  padding-bottom: 0.75rem;
+}
+
+.entry {
+  border-bottom: 0.5px solid #1e2235;
+  padding-bottom: 1.25rem;
+}
+
+.entry-meta {
+  font-size: 10px;
+  color: #3d4a6e;
+  letter-spacing: 2px;
+  margin-bottom: 0.4rem;
+}
+
+.entry-title {
+  font-size: 14px;
+  color: #c8c9d4;
+  font-weight: normal;
+  margin-bottom: 0.4rem;
+  display: block;
+  transition: color 0.15s;
+}
+
+.entry-title:hover { color: #d4d6e8; text-decoration: underline; }
+
+.entry-excerpt {
+  font-size: 11px;
+  color: #4a5070;
+  line-height: 1.7;
+}
+
+.entry-tag {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #3d4a6e;
+  border: 0.5px solid #2a2f45;
+  padding: 1px 6px;
+  margin-top: 0.5rem;
+  margin-right: 4px;
+  text-transform: uppercase;
+}
+
+.article-body {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #9a9db8;
+  max-width: 680px;
+}
+
+.article-body p { margin-bottom: 1.25rem; }
+.article-body h2 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 22px;
+  color: #d4d6e8;
+  margin: 2rem 0 0.75rem;
+  font-weight: normal;
+}
+
+.site-footer {
+  border-top: 0.5px solid #1e2235;
+  padding: 0.75rem 1.5rem;
+  font-size: 10px;
+  color: #252838;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .site-body { grid-template-columns: 1fr; }
+  .sidebar {
+    border-right: none;
+    border-bottom: 0.5px solid #2a2f45;
+    display: none;
+    padding: 1rem;
+  }
+  .sidebar.open { display: flex; }
+  .hamburger { display: block; }
+  .main { padding: 1.25rem 1rem; }
+}
