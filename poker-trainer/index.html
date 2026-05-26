@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pot Math Trainer — for Dealers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --felt: #1a3a2a;
+    --felt-dark: #0f2218;
+    --felt-light: #22503a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #8a6e30;
+    --cream: #f5edd8;
+    --cream-dim: #c4b896;
+    --white: #ffffff;
+    --danger: #c0392b;
+    --danger-light: #f9e6e4;
+    --success: #1e7e4a;
+    --success-light: #e4f4eb;
+    --card-bg: rgba(255,255,255,0.06);
+    --card-border: rgba(201,168,76,0.25);
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  body {
+    background-color: var(--felt-dark);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--cream);
+  }
+
+  .app {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .header-suit {
+    font-size: 28px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+  .header p {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* Score row */
+  .score-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .score-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 10px;
+    text-align: center;
+  }
+  .score-card .sc-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 4px;
+  }
+  .score-card .sc-val {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--cream);
+  }
+  .score-card .sc-val.good { color: #5ec98a; }
+  .score-card .sc-val.bad { color: #e07070; }
+
+  /* Mode toggle */
+  .mode-toggle {
+    display: flex;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 3px;
+    margin-bottom: 1rem;
+    gap: 3px;
+  }
+  .mode-btn {
+    flex: 1;
+    padding: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--cream-dim);
+    transition: all 0.15s;
+  }
+  .mode-btn.active {
+    background: var(--gold);
+    color: var(--felt-dark);
+    font-weight: 500;
+  }
+  .mode-btn:hover:not(.active) { color: var(--cream); }
+
+  /* Game filter */
+  .controls {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .ctrl-btn {
+    flex: 1;
+    padding: 8px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: transparent;
+    color: var(--cream-dim);
+    transition: all 0.15s;
+  }
+  .ctrl-btn.active {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.08);
+  }
+  .ctrl-btn:hover:not(.active) { color: var(--cream); border-color: rgba(201,168,76,0.4); }
+
+  /* Scenario card */
+  .scenario-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .game-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .street-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 8px;
+  }
+
+  .actions-list {
+    list-style: none;
+    margin-bottom: 1.25rem;
+  }
+  .actions-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    font-size: 13px;
+    gap: 8px;
+  }
+  .actions-list li:last-child { border-bottom: none; }
+  .player-name { color: var(--cream-dim); white-space: nowrap; }
+  .action-desc { color: var(--cream); flex: 1; text-align: right; }
+  .chips-val { color: var(--gold-light); font-weight: 500; white-space: nowrap; }
+
+  .question-box {
+    background: rgba(0,0,0,0.2);
+    border-radius: var(--radius);
+    border-left: 2px solid var(--gold-dim);
+    padding: 10px 14px;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--cream);
+  }
+
+  .hint-strip {
+    font-size: 11px;
+    color: var(--gold-dim);
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Answer input */
+  .answer-row {
+    display: flex;
+    gap: 8px;
+  }
+  .answer-input {
+    flex: 1;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: rgba(0,0,0,0.3);
+    color: var(--cream);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .answer-input:focus { border-color: var(--gold); }
+  .answer-input::placeholder { color: rgba(196,184,150,0.3); }
+  .answer-input:disabled { opacity: 0.5; }
+
+  .submit-btn {
+    padding: 12px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: var(--gold);
+    color: var(--felt-dark);
+    transition: opacity 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.97); }
+  .submit-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+  /* Feedback */
+  .feedback {
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    font-size: 13px;
+    line-height: 1.7;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct {
+    background: rgba(30,126,74,0.15);
+    border: 1px solid rgba(94,201,138,0.3);
+    color: #7de0a8;
+  }
+  .feedback.wrong {
+    background: rgba(192,57,43,0.15);
+    border: 1px solid rgba(224,112,112,0.3);
+    color: #f0a0a0;
+  }
+  .feedback .fb-title {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .formula {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    background: rgba(0,0,0,0.25);
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    border-left: 2px solid var(--gold-dim);
+  }
+  .formula strong { color: var(--gold-light); }
+
+  /* Next button */
+  .next-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: transparent;
+    color: var(--cream-dim);
+    transition: all 0.15s;
+    display: none;
+  }
+  .next-btn.show { display: block; }
+  .next-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--card-border);
+    margin: 1.5rem 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    opacity: 0.4;
+    margin-top: 2rem;
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 22px; }
+    .scenario-card { padding: 1rem; }
+    .answer-input { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="header-suit">♠ ♥ ♣ ♦</div>
+    <h1>Pot Math Trainer</h1>
+    <p>for dealers</p>
+  </header>
+
+  <div class="score-row">
+    <div class="score-card"><div class="sc-label">Correct</div><div class="sc-val good" id="score-correct">0</div></div>
+    <div class="score-card"><div class="sc-label">Wrong</div><div class="sc-val bad" id="score-wrong">0</div></div>
+    <div class="score-card"><div class="sc-label">Streak</div><div class="sc-val" id="score-streak">0</div></div>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="btn-teaching" onclick="setMode('teaching')">Teaching</button>
+    <button class="mode-btn" id="btn-drill" onclick="setMode('drill')">Drill</button>
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn active" id="btn-both" onclick="setGame('both')">Both games</button>
+    <button class="ctrl-btn" id="btn-texas" onclick="setGame('texas')">Texas Hold'em</button>
+    <button class="ctrl-btn" id="btn-omaha" onclick="setGame('omaha')">Omaha</button>
+  </div>
+
+  <div id="scenario-container"></div>
+
+  <div class="footer">practice makes perfect ♠</div>
+</div>
+
+<script>
+  let mode = 'teaching';
+  let gameFilter = 'both';
+  let correct = 0, wrong = 0, streak = 0;
+  let current = null;
+
+  const NAMES = ['Ana','Bruno','Celia','David','Ewa','Filip','Gabi','Hugo','Ines','Jana'];
+  const STREETS = ['Preflop','Flop','Turn','River'];
+
+  function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function fmt(n) { return n.toLocaleString(); }
+  function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+  function pickGame() {
+    if (gameFilter === 'texas') return "Texas Hold'em";
+    if (gameFilter === 'omaha') return 'Omaha';
+    return Math.random() < 0.5 ? "Texas Hold'em" : 'Omaha';
+  }
+
+  function genPotTracking() {
+    const game = pickGame();
+    const numPlayers = rnd(2, 6);
+    const players = shuffle(NAMES).slice(0, numPlayers);
+    const street = STREETS[rnd(0, 3)];
+    const sb = rnd(1, 5) * 5;
+    const bb = sb * 2;
+    const actions = [];
+    let pot = 0;
+    let startingPot = 0;
+
+    if (street === 'Preflop') {
+      actions.push({ player: players[0], desc: 'posts small blind', amount: sb });
+      actions.push({ player: players[1], desc: 'posts big blind', amount: bb });
+      pot = sb + bb;
+      const numCallers = rnd(0, Math.min(numPlayers - 2, 3));
+      for (let i = 0; i < numCallers; i++) {
+        actions.push({ player: players[2 + i] || players[i], desc: 'calls', amount: bb });
+        pot += bb;
+      }
+      if (Math.random() < 0.4 && numPlayers > 2) {
+        const raiseAmt = bb * rnd(2, 4);
+        actions.push({ player: players[numCallers + 2] || players[numPlayers - 1], desc: 'raises to', amount: raiseAmt });
+        pot += raiseAmt;
+      }
+    } else {
+      startingPot = rnd(2, 10) * bb;
+      pot = startingPot;
+      const numActors = rnd(2, Math.min(numPlayers, 4));
+      const bet = rnd(1, 3) * bb;
+      actions.push({ player: players[0], desc: 'bets', amount: bet });
+      pot += bet;
+      for (let i = 1; i < numActors - 1; i++) {
+        actions.push({ player: players[i], desc: 'calls', amount: bet });
+        pot += bet;
+      }
+      if (Math.random() < 0.3 && numActors >= 2) {
+        const raise = bet * rnd(2, 3);
+        actions.push({ player: players[numActors - 1] || players[numPlayers - 1], desc: 'raises to', amount: raise });
+        pot += raise;
+      }
+    }
+
+    return { type: 'pot_tracking', game, street, actions, startingPot, answer: pot };
+  }
+
+  function genPotRaise() {
+    const game = pickGame();
+    const numPlayers = rnd(2, 6);
+    const players = shuffle(NAMES).slice(0, numPlayers);
+    const street = STREETS[rnd(1, 3)];
+    const bb = rnd(1, 5) * 10;
+    const potBefore = rnd(3, 15) * bb;
+    const lastBet = rnd(1, 4) * bb;
+    const potRaise = 3 * lastBet + potBefore;
+    const raiser = players[rnd(0, numPlayers - 1)];
+
+    return { type: 'pot_raise', game, street, bb, potBefore, lastBet, potRaise, answer: potRaise, raiser };
+  }
+
+  function newScenario() {
+    current = Math.random() < 0.5 ? genPotTracking() : genPotRaise();
+    render();
+  }
+
+  function render() {
+    const s = current;
+    const container = document.getElementById('scenario-container');
+
+    let bodyHTML = '';
+
+    if (s.type === 'pot_tracking') {
+      let rows = '';
+      if (s.startingPot > 0) {
+        rows += `<li><span class="player-name">Pot coming in</span><span class="action-desc"></span><span class="chips-val">${fmt(s.startingPot)}</span></li>`;
+      }
+      s.actions.forEach(a => {
+        rows += `<li><span class="player-name">${a.player}</span><span class="action-desc">${a.desc}</span><span class="chips-val">${fmt(a.amount)}</span></li>`;
+      });
+      bodyHTML = `
+        <div class="street-label">Betting action</div>
+        <ul class="actions-list">${rows}</ul>
+        <div class="question-box">What is the total pot after all these actions?</div>
+      `;
+    } else {
+      bodyHTML = `
+        <div class="question-box">
+          Pot is <strong>${fmt(s.potBefore)}</strong>.<br>
+          ${s.raiser} bets <strong>${fmt(s.lastBet)}</strong>.<br>
+          Next player announces <em>"pot-sized raise"</em>.<br><br>
+          What is the raise amount?
+        </div>
+      `;
+    }
+
+    const hint = s.type === 'pot_tracking'
+      ? 'Add up all chip amounts shown above.'
+      : `Formula: 3 × last bet + pot before the bet`;
+
+    container.innerHTML = `
+      <div class="scenario-card">
+        <div class="game-badge">${s.game} &mdash; ${s.street}</div>
+        ${bodyHTML}
+        ${mode === 'teaching' ? `<div class="hint-strip">${hint}</div>` : ''}
+        <div class="answer-row">
+          <input type="number" class="answer-input" id="answer-input" placeholder="Your answer..." min="0" />
+          <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">Check</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button class="next-btn" id="next-btn" onclick="newScenario()">Next hand &rarr;</button>
+      </div>
+    `;
+
+    const inp = document.getElementById('answer-input');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+    inp.focus();
+  }
+
+  function checkAnswer() {
+    const inp = document.getElementById('answer-input');
+    const val = parseInt(inp.value, 10);
+    if (isNaN(val) || val < 0) return;
+
+    const s = current;
+    const isCorrect = val === s.answer;
+    const fb = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+
+    document.getElementById('submit-btn').disabled = true;
+    inp.disabled = true;
+
+    if (isCorrect) {
+      correct++; streak++;
+      document.getElementById('score-correct').textContent = correct;
+    } else {
+      wrong++; streak = 0;
+      document.getElementById('score-wrong').textContent = wrong;
+    }
+    document.getElementById('score-streak').textContent = streak;
+
+    fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+
+    let formulaHTML = '';
+    if (mode === 'teaching') {
+      if (s.type === 'pot_tracking') {
+        let lines = s.startingPot > 0 ? `Starting pot: ${fmt(s.startingPot)}<br>` : '';
+        lines += s.actions.map(a => `${a.player} ${a.desc}: +${fmt(a.amount)}`).join('<br>');
+        lines += `<br>─────────────<br><strong>Total: ${fmt(s.answer)}</strong>`;
+        formulaHTML = `<div class="formula">${lines}</div>`;
+      } else {
+        formulaHTML = `<div class="formula">
+          Pot before bet: ${fmt(s.potBefore)}<br>
+          Last bet: ${fmt(s.lastBet)}<br>
+          3 × ${fmt(s.lastBet)} + ${fmt(s.potBefore)}<br>
+          = ${fmt(s.lastBet * 3)} + ${fmt(s.potBefore)}<br>
+          <strong>= ${fmt(s.answer)}</strong>
+        </div>`;
+      }
+    }
+
+    if (isCorrect) {
+      fb.innerHTML = `<div class="fb-title">Correct! ${streak > 2 ? '🔥 ' + streak + ' in a row' : ''}</div>${formulaHTML}`;
+    } else {
+      fb.innerHTML = `<div class="fb-title">Not quite — correct answer: ${fmt(s.answer)}</div>${formulaHTML}`;
+    }
+
+    nextBtn.classList.add('show');
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('btn-teaching').classList.toggle('active', m === 'teaching');
+    document.getElementById('btn-drill').classList.toggle('active', m === 'drill');
+    newScenario();
+  }
+
+  function setGame(g) {
+    gameFilter = g;
+    ['both','texas','omaha'].forEach(id => {
+      document.getElementById('btn-' + id).classList.toggle('active', id === g);
+    });
+    newScenario();
+  }
+
+  newScenario();
+</script>
+</body>
+</html>
